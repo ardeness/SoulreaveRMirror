@@ -6,9 +6,15 @@
     "react": "^16.3.1",
     "react-clock": "^2.2.1",
     "react-dom": "^16.3.1",
-    "react-scripts": "1.1.4"
+    "react-gif-player": "^0.4.1",
+    "react-scripts": "1.1.4",
+    "weathericons": "^2.1.0"
   },
-  "main": "src/electron-starter.js",
+  "proxy": {
+    "/data/": {
+      "target": "http://api.openweathermap.org/"
+    }
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

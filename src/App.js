@@ -1,34 +1,26 @@
 import React, { Component } from 'react';
-//import Clock from 'react-clock';
-import Clock from 'react-clock/dist/entry.nostyle';
+
+import GifPlayer from 'react-gif-player';
+
+import siri_like from './siri_like.gif';
+import ai_listening from './ai_listening.gif';
+
 import './App.css';
 
-
-const mainStyle = {
-  backgroundColor: 'black',
-  color: 'white',
-  display: 'block',
-  overflowX: 'hidden',
-  overflowY: 'hidden',
-
-};
+import Clock from './Clock';
+import Weather from './Weather';
 
 class App extends Component {
-  state = {
-    date: new Date(),
-  }
-
   componentDidMount() {
-    setInterval(
-      () => { this.setState({date:new Date()}) },
-      1000
-    );
+
   }
 
   render() {
     return (
       <div>
-        <Clock size={200} value={this.state.date}/>
+        <Clock/>
+        <Weather/>
+        <GifPlayer gif={siri_like} autoplay={true}/>
       </div>
     );
   }
