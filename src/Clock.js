@@ -14,7 +14,7 @@ class Clock extends Component {
     };
   }
   componentDidMount() {
-    setInterval(this.updateTime, 1000);
+    setInterval(this.updateTime, 60000);
   }
 
   updateTime = () => {
@@ -64,7 +64,7 @@ class Clock extends Component {
             <DigitDotDisplay {...dateStyle} digit={parseInt(date.month/10, 10)}/>
           </div>
           <div style={{float:'left'}}>
-            <DigitDotDisplay {...dateStyle} digit={date.month%10}/>
+            <DigitDotDisplay {...dateStyle} digit={date.month%10+1}/>
           </div>
           <div style={{float:'left'}}>
             <CharDotDisplay {...dateStyle} char='.'/>

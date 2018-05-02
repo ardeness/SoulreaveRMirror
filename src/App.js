@@ -20,7 +20,9 @@ class App extends Component {
       <div>
         <Clock/>
         <Weather/>
-        <GifPlayer gif={siri_like} autoplay={true}/>
+	<div style={{width:'100%', display: 'flex', justifyContent:'center'}}>
+          <GifPlayer gif={ai_listening} autoplay={true} width={100}/>
+	</div>
       </div>
     );
   }

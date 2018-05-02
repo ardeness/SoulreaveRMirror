@@ -83,7 +83,7 @@ class Weather extends Component {
       const APIKEY='35742fb2954ff689d62f0e8b0b929dc0';
       const lat='37.362';
       const lon='126.933';
-      const url='/data/2.5/weather?lat='+lat+'&lon='+lon+'&APPID='+APIKEY;
+      const url='http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&APPID='+APIKEY;
 
       fetch(url)
       .then(response => response.json())
