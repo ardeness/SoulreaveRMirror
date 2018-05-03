@@ -17,15 +17,28 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { visible: false };
+    this.state = { visible: false, request: '' };
   }
 
   componentDidMount() {
   }
 
   messageHandler = (msg) => {
-    console.log(msg);
+    let response = JSON.parse(msg);
+    console.log(response);
+    if(response.status === 'listening') {
+      this.show();
+    }
+    else if(response.status === 'responding') {
+      this.hide();
+      this.setState({request:response.request});
+    }
   }
+
+  onOpen = () => {
+    console.log("Connected");
+  }
+
   show = () => {
     this.setState({visible:true});
   }
@@ -37,7 +50,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Websocket url='ws://localhost:8765/' onMessage={this.messageHandler}/>
+        <Websocket url='ws://127.0.0.1:8765/' onMessage={this.messageHandler} onOpen={this.onOpen} />
         <Clock/>
         <Weather/>
         <Rodal
@@ -48,10 +61,11 @@ class App extends Component {
           customStyles={modalStyle}
           showCloseButton={false}
         >
-  	      <div style={{width:'100%', display: 'flex', justifyContent:'center'}}>
+          <div style={{width:'100%', display: 'flex', justifyContent:'center'}}>
             <GifPlayer gif={ai_listening} autoplay={true} width={200}/>
-  	      </div>
+          </div>
         </Rodal>
+        <div>{this.state.request}</div>
       </div>
     );
   }
