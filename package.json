@@ -9,6 +9,7 @@
     "react-gif-player": "^0.4.1",
     "react-scripts": "1.1.4",
     "react-websocket": "^2.0.0",
+    "react-youtube": "^7.6.0",
     "rodal": "^1.6.3",
     "weathericons": "^2.1.0"
   },
