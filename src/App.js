@@ -19,38 +19,70 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { visible: false, request: '', musicPlayer: undefined };
+    let opts= {
+      width: '600',
+      height: '338',
+      playerVars: { 
+        loop: 1,
+        autoplay: 1,
+        listType: 'search',
+        list: 'jazz',
+        //controls: 0,
+        //disablekb: 1,
+        fs: 0,
+        //playsinline: 1,
+        rel: 0,
+        showinfo: 0,
+        color: 'white'
+      }
+    };
+    this.state = { visible: false, request: '', musicPlayer: undefined, opts };
   }
 
   componentDidMount() {
   }
 
   messageHandler = (msg) => {
+    const musicCommandRegex = /(play|stop|pause|resume|next|previous)[ |\t]*([a-z|A-Z| ]*) music/;
     let response = JSON.parse(msg);
-    console.log(response);
     if(response.status === 'listening') {
       this.show();
     }
     else if(response.status === 'responding') {
       this.hide();
       this.setState({request:response.request});
-      if(response.request === 'play music') {
-        if(this.state.musicPlayer) this.state.musicPlayer.playVideo();
-      }      
-      else if(response.request === 'stop music') {
-        if(this.state.musicPlayer) this.state.musicPlayer.stopVideo();
-      }      
-      else if(response.request === 'pause music') {
-        if(this.state.musicPlayer) this.state.musicPlayer.pauseVideo();
-      }
-      else if(response.request === 'resume music') {
-        if(this.state.musicPlayer) this.state.musicPlayer.playVideo();
+      if(musicCommandRegex.test(response.request)) {
+        let commands = response.request.split(musicCommandRegex);
+        console.log(commands);
+        let command = commands[1];
+        let genre = commands[2];
+        if(command === 'play') {
+          if(genre !== "") {
+	    this.state.musicPlayer.loadPlaylist({listType:'search',list:genre});
+            this.state.musicPlayer.setShuffle(true);
+          }
+          if(this.state.musicPlayer) this.state.musicPlayer.playVideo();
+        }      
+        else if(command === 'stop') {
+          if(this.state.musicPlayer) this.state.musicPlayer.stopVideo();
+        }      
+        else if(command === 'pause') {
+          if(this.state.musicPlayer) this.state.musicPlayer.pauseVideo();
+        }
+        else if(command === 'resume') {
+          if(this.state.musicPlayer) this.state.musicPlayer.playVideo();
+        }
+        else if(command === 'next') {
+          if(this.state.musicPlayer) this.state.musicPlayer.nextVideo();
+        }
+        else if(command === 'previous') {
+          if(this.state.musicPlayer) this.state.musicPlayer.previousVideo();
+        }
       }
     }
   }
 
   onOpen = () => {
-    console.log("Connected");
   }
 
   show = () => {
@@ -62,28 +94,16 @@ class App extends Component {
   }
 
   youtubeOnReady = event => {
-    event.target.setVolume(40);
-    event.target.playVideo();
+    console.log("Youtube ready");
+    event.target.setVolume(70);
+    //event.target.playVideo();
     this.setState({musicPlayer: event.target});
+    console.log(event.target.getOptions('list'));
   }
 
+            //<GifPlayer gif={ai_listening} autoplay={true} width={200}/>
   render() {
-    const opts= {
-      width: '600',
-      height: '338',
-      playerVars: { 
-        autoplay: 1,
-        listType: 'search',
-        list: 'jazz',
-        controls: 0,
-        disablekb: 1,
-        fs: 0,
-        playsinline: 1,
-        rel: 0,
-        showinfo: 0,
-        color: 'white'
-      }
-    };
+    console.log(this.state.opts);
 
     return (
       <div>
@@ -104,7 +124,7 @@ class App extends Component {
         </Rodal>
         <div style={{width:'100%', display: 'none', justifyContent:'center'}}>
           <YouTube
-            opts={opts}
+            opts={this.state.opts}
             onReady={this.youtubeOnReady}   
           />
         </div>
